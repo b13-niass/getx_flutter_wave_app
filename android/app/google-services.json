@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "794936802588",
+    "project_id": "waveapp-57e3d",
+    "storage_bucket": "waveapp-57e3d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794936802588:android:e2da1164c7b8f1744f4ed9",
+        "android_client_info": {
+          "package_name": "com.codev13.getx_wave_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkEYpN2LdpQ98mAqKyC4X23kGaSZet9iY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
