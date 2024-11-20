@@ -5,9 +5,8 @@ part 'generate/favoris_model.g.dart';
 @JsonSerializable()
 class FavorisModel {
   // Fields
-  final int id;
+  final String? id;
   final DateTime? createdAt;
-  final bool deleted;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
   final String? nom;
@@ -21,7 +20,6 @@ class FavorisModel {
   FavorisModel({
     required this.id,
     this.createdAt,
-    required this.deleted,
     this.deletedAt,
     this.updatedAt,
     this.nom,

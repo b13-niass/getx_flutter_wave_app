@@ -7,11 +7,10 @@ part of '../favoris_model.dart';
 // **************************************************************************
 
 FavorisModel _$FavorisModelFromJson(Map<String, dynamic> json) => FavorisModel(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
-      deleted: json['deleted'] as bool,
       deletedAt: json['deletedAt'] == null
           ? null
           : DateTime.parse(json['deletedAt'] as String),
@@ -28,7 +27,6 @@ Map<String, dynamic> _$FavorisModelToJson(FavorisModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt?.toIso8601String(),
-      'deleted': instance.deleted,
       'deletedAt': instance.deletedAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'nom': instance.nom,

@@ -7,11 +7,10 @@ part of '../user_model.dart';
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-      id: (json['id'] as num).toInt(),
+      id: json['id'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
-      deleted: json['deleted'] as bool,
       deletedAt: json['deletedAt'] == null
           ? null
           : DateTime.parse(json['deletedAt'] as String),
@@ -42,16 +41,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       wallet: json['wallet'] == null
           ? null
           : WalletModel.fromJson(json['wallet'] as Map<String, dynamic>),
-      sentTransactions: (json['sentTransactions'] as List<dynamic>?)
+      transactions: (json['transactions'] as List<dynamic>?)
           ?.map((e) => TransactionModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      receivedTransactions: (json['receivedTransactions'] as List<dynamic>?)
-          ?.map((e) => TransactionModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      sentPlanifications: (json['sentPlanifications'] as List<dynamic>?)
-          ?.map((e) => PlanificationModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      receivedPlanifications: (json['receivedPlanifications'] as List<dynamic>?)
+      planifications: (json['planifications'] as List<dynamic>?)
           ?.map((e) => PlanificationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -59,7 +52,6 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'id': instance.id,
       'createdAt': instance.createdAt?.toIso8601String(),
-      'deleted': instance.deleted,
       'deletedAt': instance.deletedAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'adresse': instance.adresse,
@@ -79,10 +71,8 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'paysId': instance.paysId,
       'favoris': instance.favoris,
       'wallet': instance.wallet,
-      'sentTransactions': instance.sentTransactions,
-      'receivedTransactions': instance.receivedTransactions,
-      'sentPlanifications': instance.sentPlanifications,
-      'receivedPlanifications': instance.receivedPlanifications,
+      'transactions': instance.transactions,
+      'planifications': instance.planifications,
     };
 
 const _$ChannelEnumEnumMap = {

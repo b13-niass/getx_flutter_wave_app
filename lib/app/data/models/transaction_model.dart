@@ -6,9 +6,8 @@ part 'generate/transaction_model.g.dart';
 @JsonSerializable()
 class TransactionModel {
   // Fields
-  final int id;
+  final String? id;
   final DateTime? createdAt;
-  final bool deleted;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
   final EtatTransactionEnum? etatTransaction;
@@ -23,9 +22,8 @@ class TransactionModel {
 
   // Constructor
   TransactionModel({
-    required this.id,
+    this.id,
     this.createdAt,
-    required this.deleted,
     this.deletedAt,
     this.updatedAt,
     this.etatTransaction,

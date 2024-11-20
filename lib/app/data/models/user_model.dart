@@ -10,9 +10,8 @@ part 'generate/user_model.g.dart';
 @JsonSerializable()
 class UserModel {
   // Fields
-  final int id;
+  final String? id;
   final DateTime? createdAt;
-  final bool deleted;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
   final String? adresse;
@@ -23,7 +22,7 @@ class UserModel {
   final String? email;
   final EtatCompteEnum? etatCompte;
   final String? fileCni;
-  final int nbrConnection;
+  final int? nbrConnection;
   final String? nom;
   final String? password;
   final String? prenom;
@@ -34,16 +33,13 @@ class UserModel {
   final int? paysId;
   final List<FavorisModel>? favoris;
   final WalletModel? wallet;
-  final List<TransactionModel>? sentTransactions;
-  final List<TransactionModel>? receivedTransactions;
-  final List<PlanificationModel>? sentPlanifications;
-  final List<PlanificationModel>? receivedPlanifications;
+  final List<TransactionModel>? transactions;
+  final List<PlanificationModel>? planifications;
 
   // Constructor
   UserModel({
-    required this.id,
+    this.id,
     this.createdAt,
-    required this.deleted,
     this.deletedAt,
     this.updatedAt,
     this.adresse,
@@ -54,7 +50,7 @@ class UserModel {
     this.email,
     this.etatCompte,
     this.fileCni,
-    required this.nbrConnection,
+    this.nbrConnection,
     this.nom,
     this.password,
     this.prenom,
@@ -63,10 +59,8 @@ class UserModel {
     this.paysId,
     this.favoris,
     this.wallet,
-    this.sentTransactions,
-    this.receivedTransactions,
-    this.sentPlanifications,
-    this.receivedPlanifications,
+    this.transactions,
+    this.planifications
   });
 
   // JSON Serialization

@@ -6,9 +6,8 @@ part 'generate/frais_model.g.dart';
 @JsonSerializable()
 class FraisModel {
   // Fields
-  final int id;
+  final String? id;
   final DateTime? createdAt;
-  final bool deleted;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
   final double valeur;
@@ -20,7 +19,6 @@ class FraisModel {
   FraisModel({
     required this.id,
     this.createdAt,
-    required this.deleted,
     this.deletedAt,
     this.updatedAt,
     required this.valeur,

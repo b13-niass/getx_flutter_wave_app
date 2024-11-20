@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:getx_wave_app/app/data/fire_base_seeder.dart';
 import 'package:getx_wave_app/core/firebase_initialize.dart';
 
 class DependencyInitializer {
@@ -8,6 +10,12 @@ class DependencyInitializer {
     Get.put(FirebaseInitializer.firestore);
 
     Get.put(FirebaseInitializer.storage);
+
+    Get.put<FirebaseSeeder>(
+        FirebaseSeeder(
+          Get.find<FirebaseFirestore>()
+      )
+    );
   }
 }
 

@@ -5,13 +5,12 @@ part 'generate/wallet_model.g.dart';
 @JsonSerializable()
 class WalletModel {
   // Fields
-  final int id;
+  final String? id;
   final DateTime? createdAt;
-  final bool deleted;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
   final double plafond;
-  final double solde;
+  double solde;
 
   // Relationships
   final int? userId;
@@ -20,7 +19,6 @@ class WalletModel {
   WalletModel({
     required this.id,
     this.createdAt,
-    required this.deleted,
     this.deletedAt,
     this.updatedAt,
     required this.plafond,
