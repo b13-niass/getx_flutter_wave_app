@@ -53,8 +53,8 @@ class TransfertcontactController extends GetxController {
   Future<void> sendTransfer(String phoneNumber) async {
     if (!formKey.currentState!.validate()) return;
 
-    // Validate amount against current balance
     final montantEnvoye = double.tryParse(sentAmountController.text) ?? 0;
+
     if (montantEnvoye > (GlobalState.user.value?.wallet?.solde ?? 0)) {
       Get.snackbar(
         'Erreur',
@@ -67,34 +67,45 @@ class TransfertcontactController extends GetxController {
 
     isLoading.value = true;
     try {
-      final transactionModel = await _clientService.transferAmount(
-        senderPhone: GlobalState.user.value!.telephone!,
-        receiverPhone: "+221$phoneNumber",
-        amount: montantEnvoye,
-      );
 
-      if (transactionModel != null) {
-        // Update user wallet and transactions
-        GlobalState.user.update((val) {
-          val?.wallet?.solde -= montantEnvoye;
-          val?.transactions?.insert(0, transactionModel);
-        });
-
-        // Update stored user data
-        await TokenStorage.saveObject('user', GlobalState.user.value!.toJson());
-
-        Get.snackbar(
-          'Succès',
-          'Transfert réussi !',
-          backgroundColor: Colors.green,
-          snackPosition: SnackPosition.BOTTOM,
+      final bool receiverPlafond = await _clientService.isTransactionSumExceedingPlafond(telephone: "+221$phoneNumber");
+      final bool senderPlafond = await _clientService.isTransactionSumExceedingPlafond(telephone: GlobalState.user.value!.telephone!);
+      if(!receiverPlafond && !senderPlafond) {
+        final transactionModel = await _clientService.transferAmount(
+          senderPhone: GlobalState.user.value!.telephone!,
+          receiverPhone: "+221$phoneNumber",
+          amount: montantEnvoye,
         );
 
-        Get.offNamed('/home');
-      } else {
+        if (transactionModel != null) {
+          GlobalState.user.update((val) {
+            val?.wallet?.solde -= montantEnvoye;
+            val?.transactions?.insert(0, transactionModel);
+          });
+
+          await TokenStorage.saveObject(
+              'user', GlobalState.user.value!.toJson());
+
+          Get.snackbar(
+            'Succès',
+            'Transfert réussi !',
+            backgroundColor: Colors.green,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+
+          Get.offNamed('/home');
+        } else {
+          Get.snackbar(
+            'Erreur',
+            'Transfert échoué !',
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      }else{
         Get.snackbar(
           'Erreur',
-          'Transfert échoué !',
+          'Le plafond est atteint',
           backgroundColor: Colors.red,
           snackPosition: SnackPosition.BOTTOM,
         );

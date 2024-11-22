@@ -11,7 +11,7 @@ class PlanificationModel {
   final DateTime? deletedAt;
   final DateTime? updatedAt;
   final int? dayOfMonth;
-  final String? daysOfWeek;
+  final List<String>? daysOfWeek; // Updated to List<String>
   final double montant;
   final RecurrenceType? recurrenceType;
   final String? timeOfDay;
@@ -24,7 +24,7 @@ class PlanificationModel {
     this.deletedAt,
     this.updatedAt,
     this.dayOfMonth,
-    this.daysOfWeek,
+    this.daysOfWeek, // Updated
     required this.montant,
     this.recurrenceType,
     this.timeOfDay,

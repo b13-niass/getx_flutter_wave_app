@@ -9,7 +9,7 @@ class WalletModel {
   final DateTime? createdAt;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
-  final double plafond;
+  double plafond;
   double solde;
 
   // Relationships

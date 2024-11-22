@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:getx_wave_app/app/data/models/user_model.dart';
 import 'package:getx_wave_app/app/data/services/multi_auth_service.dart';
+import 'package:getx_wave_app/app/data/services/security/token_storage.dart';
 
 class LoginController extends GetxController {
   final AuthService _authService = Get.find<AuthService>();
@@ -15,7 +17,7 @@ class LoginController extends GetxController {
   var selectedCountryCode = '+221'.obs;
   String? _verificationId;
 
-  Rx<User?> user = Rx<User?>(null);
+  Rx<UserModel?> user = Rx<UserModel?>(null);
   RxBool isLoading = false.obs;
 
   // @override
@@ -62,15 +64,27 @@ class LoginController extends GetxController {
   Future<void> googleSignIn() async {
     isLoading.value = true;
     final result = await _authService.signInWithGoogle();
-    user.value = result?.user;
+    if(result != null){
+    final UserModel? userModel = await _authService.getUserByEmail(result.user!.email!);
+    await TokenStorage.saveObject('user', userModel!.toJson());
+    Get.toNamed("/home", arguments: {"user": userModel});
     isLoading.value = false;
+    }else{
+      isLoading.value = false;
+      Get.snackbar(
+        'Erreur',
+        "Vous n'avez pas de compte",
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 
   // Facebook Sign In
   Future<void> facebookSignIn() async {
     isLoading.value = true;
     final result = await _authService.signInWithFacebook();
-    user.value = result?.user;
+    // user.value = result?.user;
     isLoading.value = false;
   }
   // Logout

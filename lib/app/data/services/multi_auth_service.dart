@@ -109,6 +109,25 @@ class AuthService {
     }
   }
 
+  Future<UserModel?> getUserByEmail(String email) async {
+    final query = await firebaseFirestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (query.docs.isNotEmpty) {
+      final doc = query.docs.first;
+
+      return UserModel.fromJson({
+        ...doc.data()
+      });
+    } else {
+      return null;
+    }
+
+  }
+
+
   Future<UserModel?> verifyOtpAndTelephone(String phoneNumber, String otp) async {
     final query = await firebaseFirestore
         .collection('users')
@@ -153,7 +172,7 @@ class AuthService {
   // Logout
   Future<void> logout() async {
     await TokenStorage.deleteObject('user');
-    // await _auth.signOut();
+    await _auth.signOut();
     // await GoogleSignIn().signOut();
     // await FacebookAuth.instance.logOut();
   }

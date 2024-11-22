@@ -20,9 +20,9 @@ class ButtonActionWidget extends StatelessWidget {
         }else if (this.label == 'Depot') {
           Get.toNamed('/depot-scan');
         }else if (this.label == 'Retrait') {
-          Get.toNamed('/qrretrait');
+          Get.toNamed('/retrait-scan');
         }else if (this.label == 'Déplafonnement') {
-          Get.toNamed('/deplafonnement');
+          Get.toNamed('/deplafonnement-scan');
         }
       },
       child: Column(

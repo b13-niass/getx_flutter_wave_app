@@ -90,10 +90,13 @@ class HomeView extends GetView<HomeController> {
 
                 // QR Code Display
                 Obx(() {
-                  if (GlobalState.qrCode.isEmpty) {
+                  if (GlobalState.user.value == null || GlobalState.user.value!.telephone == null) {
                     return const Padding(
                       padding: EdgeInsets.all(20),
-                      child: Text('No QR code available.', style: AppTextStyles.body),
+                      child: Text(
+                        'No QR code available.',
+                        style: AppTextStyles.body,
+                      ),
                     );
                   } else {
                     return Container(
@@ -103,7 +106,7 @@ class HomeView extends GetView<HomeController> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: QrImageView(
-                        data: GlobalState.qrCode.value,
+                        data: GlobalState.user.value!.telephone!,
                         version: QrVersions.auto,
                         size: 200.0,
                         backgroundColor: AppColors.primaryBackground,
@@ -160,6 +163,7 @@ class HomeView extends GetView<HomeController> {
                         date: date,
                         amount: amount,
                         transaction: transaction,
+                        onPress: () => controller.showDetailPage(transaction),
                       );
                     },
                   )

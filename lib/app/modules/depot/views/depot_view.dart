@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_wave_app/app/data/providers/state_management_provider.dart';
 import 'package:getx_wave_app/app/modules/depot/controllers/depot_controller.dart';
 import 'package:getx_wave_app/core/theme/colors.dart';
 
@@ -83,7 +84,7 @@ class DepotView extends GetView<DepotController> {
                   ),
                   validator: (value) {
                     double? montant = double.tryParse(value ?? '');
-                    if (montant == null || montant <= 0) {
+                    if (montant == null || montant <= 0 || GlobalState.user.value!.wallet!.solde < montant) {
                       return 'Veuillez entrer un montant valide';
                     }
                     return null;
@@ -93,8 +94,7 @@ class DepotView extends GetView<DepotController> {
                 // Submit button
                 Obx(() {
                   return ElevatedButton(
-                    onPressed:
-                    controller.isLoading.value ? null : controller.submitMontant,
+                    onPressed: controller.isLoading.value ? null : controller.submitMontant,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.accent,
                       padding: const EdgeInsets.symmetric(
@@ -126,4 +126,5 @@ class DepotView extends GetView<DepotController> {
       ),
     );
   }
+
 }

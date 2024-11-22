@@ -8,6 +8,10 @@ import '../modules/contactselection/bindings/contactselection_binding.dart';
 import '../modules/contactselection/views/contactselection_view.dart';
 import '../modules/contactselection_multiple/bindings/contactselection_multiple_binding.dart';
 import '../modules/contactselection_multiple/views/contactselection_multiple_view.dart';
+import '../modules/deplafonnement/bindings/deplafonnement_binding.dart';
+import '../modules/deplafonnement/views/deplafonnement_view.dart';
+import '../modules/deplafonnement_scan/bindings/deplafonnement_scan_binding.dart';
+import '../modules/deplafonnement_scan/views/deplafonnement_scan_view.dart';
 import '../modules/depot/bindings/depot_binding.dart';
 import '../modules/depot/views/depot_view.dart';
 import '../modules/depot_scan/bindings/depot_scan_binding.dart';
@@ -20,8 +24,14 @@ import '../modules/planification/bindings/planification_binding.dart';
 import '../modules/planification/views/planification_view.dart';
 import '../modules/planificationliste/bindings/planificationliste_binding.dart';
 import '../modules/planificationliste/views/planificationliste_view.dart';
+import '../modules/qr_code_generator/bindings/qr_code_generator_binding.dart';
+import '../modules/qr_code_generator/views/qr_code_generator_view.dart';
 import '../modules/qrscanner/bindings/qrscanner_binding.dart';
 import '../modules/qrscanner/views/qrscanner_view.dart';
+import '../modules/retrait/bindings/retrait_binding.dart';
+import '../modules/retrait/views/retrait_view.dart';
+import '../modules/retrait_scan/bindings/retrait_scan_binding.dart';
+import '../modules/retrait_scan/views/retrait_scan_view.dart';
 import '../modules/splashscreen/bindings/splashscreen_binding.dart';
 import '../modules/splashscreen/views/splashscreen_view.dart';
 import '../modules/transactiondetail/bindings/transactiondetail_binding.dart';
@@ -120,6 +130,31 @@ class AppPages {
       name: _Paths.DEPOT,
       page: () => const DepotView(),
       binding: DepotBinding(),
+    ),
+    GetPage(
+      name: _Paths.QR_CODE_GENERATOR,
+      page: () => const QRCodeGeneratorView(),
+      binding: QrCodeGeneratorBinding(),
+    ),
+    GetPage(
+      name: _Paths.RETRAIT,
+      page: () => const RetraitView(),
+      binding: RetraitBinding(),
+    ),
+    GetPage(
+      name: _Paths.RETRAIT_SCAN,
+      page: () => const RetraitScanView(),
+      binding: RetraitScanBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEPLAFONNEMENT,
+      page: () => const DeplafonnementView(),
+      binding: DeplafonnementBinding(),
+    ),
+    GetPage(
+      name: _Paths.DEPLAFONNEMENT_SCAN,
+      page: () => const DeplafonnementScanView(),
+      binding: DeplafonnementScanBinding(),
     ),
   ];
 }

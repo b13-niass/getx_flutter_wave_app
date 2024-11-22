@@ -10,7 +10,7 @@ class TransactionModel {
   final DateTime? createdAt;
   final DateTime? deletedAt;
   final DateTime? updatedAt;
-  final EtatTransactionEnum? etatTransaction;
+  EtatTransactionEnum? etatTransaction;
   final double montantEnvoye;
   final double montantRecus;
   final TypeTransactionEnum? typeTransaction;

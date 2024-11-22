@@ -43,24 +43,22 @@ class PlanificationView extends GetView<PlanificationController> {
               onTimeSelected: controller.onTimeSelected,
             ),
             const SizedBox(height: 16),
-            FrequencySelectorWidget(
-              selecedRecurrence: controller.selectedRecurrence.value,
+            Obx(() => FrequencySelectorWidget(
+              selectedRecurrence: controller.selectedRecurrence.value,
               selectedDays: controller.selectedDays,
               onDaySelected: controller.onDaysSelected,
               selectedDayOfMonth: controller.selectedDayOfMonth.value,
               onSelectedDayOfMonth: controller.onDayOfMonthChanged,
-            ),
+            )),
             const SizedBox(height: 24),
-            Obx(
-                  () => SummaryCardWidget(
-                selectedRecurrence: controller.selectedRecurrence.value,
-                selectedDayOfMonth: controller.selectedDayOfMonth.value,
-                getSelectedDaysText: controller.getSelectedDays,
-                amount: controller.amount.value,
-                telephone: controller.contact.telephone,
-                selectedTime: controller.selectedTime.value,
-              ),
-            ),
+            Obx(() => SummaryCardWidget(
+              selectedRecurrence: controller.selectedRecurrence.value,
+              selectedDayOfMonth: controller.selectedDayOfMonth.value,
+              getSelectedDaysText: controller.getSelectedDays,
+              amount: controller.amount.value,
+              telephone: controller.contact.telephone,
+              selectedTime: controller.selectedTime.value,
+            )),
             const SizedBox(height: 24),
             SubmitButtonWidget(
               label: 'Planifier',
@@ -72,4 +70,3 @@ class PlanificationView extends GetView<PlanificationController> {
     );
   }
 }
-

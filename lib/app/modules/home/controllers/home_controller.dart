@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getx_wave_app/app/data/models/transaction_model.dart';
 import 'package:getx_wave_app/app/data/models/user_model.dart';
 import 'package:getx_wave_app/app/data/providers/state_management_provider.dart';
 import 'package:getx_wave_app/app/data/services/multi_auth_service.dart';
@@ -26,19 +27,30 @@ class HomeController extends GetxController {
     initUser();
   }
 
+  @override
+  void onReady() async{
+    super.onReady();
+    await initUser();
+  }
+
   Future<void> initUser() async{
+    isLoading.value = true;
     final userData = await TokenStorage.getObject('user');
     bool isAuthenticated = userData != null;
     if (isAuthenticated) {
-      GlobalState.user.value = UserModel.fromJson(userData);
+      UserModel? userModel = await authService.getUserByPhoneNumber(userData["telephone"]!);
+      await TokenStorage.deleteObject('user');
+      await TokenStorage.saveObject('user', userModel!.toJson());
+      GlobalState.user.value = userModel;
       final base64Data = base64Encode(utf8.encode(GlobalState.user.value!.telephone!));
       if (GlobalState.user.value?.transactions != null) {
+        print(GlobalState.user.value?.transactions?.first.createdAt);
         GlobalState.transactions.value = GlobalState.user.value!.transactions!
           ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       } else {
         GlobalState.transactions.value = [];
       }
-      print(GlobalState.user.value!.planifications);
+      // print(GlobalState.user.value!.planifications);
       if (GlobalState.user.value?.planifications != null) {
         GlobalState.planifications.value = GlobalState.user.value!.planifications!
           ..sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
@@ -46,8 +58,9 @@ class HomeController extends GetxController {
         GlobalState.planifications.value = [];
       }
       GlobalState.solde.value = GlobalState.user.value!.wallet!.solde;
-      GlobalState.qrCode.value = base64Data;
+      // GlobalState.qrCode.value = base64Data;
     }
+     isLoading.value = false;
   }
 
   void generateQRCode(String input) {
@@ -93,5 +106,9 @@ class HomeController extends GetxController {
     DateTime dateTime = DateTime.parse(dateString);
     final DateFormat formatter = DateFormat("MMMM d, y 'à' HH:mm", 'fr_FR');
     return formatter.format(dateTime);
+  }
+
+  void showDetailPage(TransactionModel transaction){
+    Get.toNamed('/transactiondetail', arguments: {'transaction': transaction});
   }
 }

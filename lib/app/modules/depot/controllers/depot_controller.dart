@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx_wave_app/app/data/models/user_model.dart';
+import 'package:getx_wave_app/app/data/providers/state_management_provider.dart';
 import 'package:getx_wave_app/app/data/services/client_service.dart';
+import 'package:getx_wave_app/app/data/services/security/token_storage.dart';
 import 'package:getx_wave_app/app/routes/app_pages.dart';
 
 class DepotController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final montantController = TextEditingController();
-
+  final Rxn<UserModel> user = Rxn<UserModel>();
   late String telephone;
   late String nom;
 
@@ -15,44 +17,67 @@ class DepotController extends GetxController {
 
   DepotController();
 
+  RxBool isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     final Map<String, dynamic> args = Get.arguments;
-    // user = args['user'] as UserModel;
-    // print('Detail ID: $user');
+    nom = args['nom'] as String;
+    telephone = args['telephone'] as String;
   }
-
-  RxBool isLoading = false.obs;
 
   Future<void> submitMontant() async {
     if (!formKey.currentState!.validate()) return;
-
+    print(1);
     isLoading.value = true;
     try {
-      final montant = double.parse(montantController.text);
+      final bool receiverPlafond = await _clientService.isTransactionSumExceedingPlafond(telephone: telephone);
+      final bool senderPlafond = await _clientService.isTransactionSumExceedingPlafond(telephone: GlobalState.user.value!.telephone!);
+      if(!receiverPlafond && !senderPlafond) {
+        final montant = double.parse(montantController.text);
+        final result = await _clientService.depotAmount(
+          senderPhone: GlobalState.user.value!.telephone!,
+          receiverPhone: telephone,
+          amount: montant,
+        );
 
-      // final result = await _clientService.depot(montant.toString(), telephone);
-      //
-      // if (result?.status == "OK") {
-      //   // Update local state or user wallet if necessary
-      //   Get.snackbar(
-      //     'Succès',
-      //     'Dépôt effectué avec succès',
-      //     backgroundColor: Colors.green,
-      //     snackPosition: SnackPosition.BOTTOM,
-      //   );
-      //
-      //   // Navigate to home
-      //   Get.offAllNamed(Routes.HOME);
-      // } else {
-      //   Get.snackbar(
-      //     'Erreur',
-      //     result?.message ?? 'Une erreur est survenue',
-      //     backgroundColor: Colors.red,
-      //     snackPosition: SnackPosition.BOTTOM,
-      //   );
-      // }
+        if (result != null) {
+          print(3);
+          GlobalState.user.update((val) {
+            val?.wallet?.solde -= montant;
+            val?.transactions?.insert(0, result);
+          });
+
+          // Update stored user data
+          await TokenStorage.saveObject(
+              'user', GlobalState.user.value!.toJson());
+
+          Get.snackbar(
+            'Succès',
+            'Dépôt effectué avec succès',
+            backgroundColor: Colors.green,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+
+          // Navigate to home
+          Get.toNamed("/home");
+        } else {
+          Get.snackbar(
+            'Erreur',
+            'Une erreur est survenue',
+            backgroundColor: Colors.red,
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      }else {
+        Get.snackbar(
+          'Erreur',
+          'Plafond Atteint',
+          backgroundColor: Colors.red,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     } catch (e) {
       Get.snackbar(
         'Erreur',

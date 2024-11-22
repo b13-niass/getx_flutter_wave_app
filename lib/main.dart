@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:getx_wave_app/app/data/fire_base_seeder.dart';
 import 'package:getx_wave_app/app/wave_app.dart';
 import 'package:getx_wave_app/core/dependencies.dart';
 import 'package:getx_wave_app/core/firebase_initialize.dart';
@@ -13,6 +14,6 @@ Future<void> main() async{
   await FirebaseInitializer.initialize();
   await dotenv.load();
   await DependencyInitializer.init();
-  // Get.find<FirebaseSeeder>().seedDatabase();
+  Get.find<FirebaseSeeder>().seedDatabase();
   runApp(WaveApp());
 }

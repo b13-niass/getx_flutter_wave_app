@@ -30,6 +30,8 @@ enum EtatTransactionEnum {
   EFFECTUER,
   @JsonValue('ANNULER')
   ANNULER,
+  @JsonValue('RETRAIT')
+  RETIRER,
 }
 
 enum TypeTransactionEnum {

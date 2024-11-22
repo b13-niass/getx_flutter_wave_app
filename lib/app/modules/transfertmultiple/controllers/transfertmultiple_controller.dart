@@ -56,6 +56,9 @@ class TransfertmultipleController extends GetxController {
           telephone: "+221${contact.telephone}",
         );
       }).toList();
+
+
+
       double montantEnvoye = double.parse(sentAmountController.text);
       double montantRecus = double.parse(receivedAmountController.text);
 
